@@ -616,6 +616,59 @@
         let isHovering = false;
         let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         let deviceOrientationEnabled = false;
+        let currentColorScheme = 0; // 0: ゴールド, 1: プラチナ, 2: ローズゴールド, 3: ブラック
+        
+        // ===== カラースキーム定義 =====
+        const colorSchemes = [
+            {
+                name: 'ゴールド',
+                bezel: 'linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #e6c200)',
+                border: '#ffd700',
+                indices: 'linear-gradient(to bottom, #ffd700, #ffed4e, #e6c200)',
+                hands: 'linear-gradient(to top, #ffd700, #ffed4e, #fff)',
+                hourHands: 'linear-gradient(to top, #e6c200, #ffd700, #ffed4e, #fff)',
+                minuteHands: 'linear-gradient(to top, #e6c200, #ffd700, #ffed4e, #fff)',
+                centerHub: 'radial-gradient(circle at 30% 30%, #ffd700, #e6c200, #b8860b), linear-gradient(45deg, #ffed4e, #ffd700)',
+                glow: 'rgba(255, 215, 0, 0.6)',
+                digital: '#ffd700'
+            },
+            {
+                name: 'プラチナ',
+                bezel: 'linear-gradient(45deg, #e5e5e5, #f8f8f8, #e5e5e5, #d0d0d0)',
+                border: '#e5e5e5',
+                indices: 'linear-gradient(to bottom, #e5e5e5, #f8f8f8, #d0d0d0)',
+                hands: 'linear-gradient(to top, #e5e5e5, #f8f8f8, #fff)',
+                hourHands: 'linear-gradient(to top, #d0d0d0, #e5e5e5, #f8f8f8, #fff)',
+                minuteHands: 'linear-gradient(to top, #d0d0d0, #e5e5e5, #f8f8f8, #fff)',
+                centerHub: 'radial-gradient(circle at 30% 30%, #e5e5e5, #d0d0d0, #b8b8b8), linear-gradient(45deg, #f8f8f8, #e5e5e5)',
+                glow: 'rgba(229, 229, 229, 0.6)',
+                digital: '#e5e5e5'
+            },
+            {
+                name: 'ローズゴールド',
+                bezel: 'linear-gradient(45deg, #e8b4b8, #f4d2d7, #e8b4b8, #d49499)',
+                border: '#e8b4b8',
+                indices: 'linear-gradient(to bottom, #e8b4b8, #f4d2d7, #d49499)',
+                hands: 'linear-gradient(to top, #e8b4b8, #f4d2d7, #fff)',
+                hourHands: 'linear-gradient(to top, #d49499, #e8b4b8, #f4d2d7, #fff)',
+                minuteHands: 'linear-gradient(to top, #d49499, #e8b4b8, #f4d2d7, #fff)',
+                centerHub: 'radial-gradient(circle at 30% 30%, #e8b4b8, #d49499, #b8787d), linear-gradient(45deg, #f4d2d7, #e8b4b8)',
+                glow: 'rgba(232, 180, 184, 0.6)',
+                digital: '#e8b4b8'
+            },
+            {
+                name: 'ブラック',
+                bezel: 'linear-gradient(45deg, #2a2a2a, #404040, #2a2a2a, #1a1a1a)',
+                border: '#2a2a2a',
+                indices: 'linear-gradient(to bottom, #2a2a2a, #404040, #1a1a1a)',
+                hands: 'linear-gradient(to top, #2a2a2a, #404040, #666)',
+                hourHands: 'linear-gradient(to top, #1a1a1a, #2a2a2a, #404040, #666)',
+                minuteHands: 'linear-gradient(to top, #1a1a1a, #2a2a2a, #404040, #666)',
+                centerHub: 'radial-gradient(circle at 30% 30%, #2a2a2a, #1a1a1a, #0a0a0a), linear-gradient(45deg, #404040, #2a2a2a)',
+                glow: 'rgba(42, 42, 42, 0.6)',
+                digital: '#2a2a2a'
+            }
+        ];
         
         // ===== デバイス傾き検出関数 =====
         function handleDeviceOrientation(event) {
@@ -721,6 +774,62 @@
                 console.error('マウス移動処理中にエラーが発生しました:', error);
             }
         });
+        
+        // ===== カラースキーム変更機能 =====
+        function changeColorScheme() {
+            currentColorScheme = (currentColorScheme + 1) % colorSchemes.length;
+            const scheme = colorSchemes[currentColorScheme];
+            
+            // ベゼル色変更
+            const diamondBezel = document.querySelector('.diamond-bezel');
+            diamondBezel.style.background = `${scheme.bezel}, radial-gradient(circle at 30% 30%, #fff, transparent 60%)`;
+            
+            // インデックス色変更
+            const hourIndices = document.querySelectorAll('.hour-index');
+            hourIndices.forEach(index => {
+                index.style.background = `${scheme.indices}, radial-gradient(ellipse at center, #fff, transparent 70%)`;
+                index.style.boxShadow = `0 0 12px ${scheme.glow}, inset 0 0 3px rgba(255, 255, 255, 0.8)`;
+            });
+            
+            // ダイヤモンド枠色変更
+            const premiumDiamonds = document.querySelectorAll('.premium-diamond');
+            premiumDiamonds.forEach(diamond => {
+                diamond.style.borderColor = scheme.border;
+                diamond.style.boxShadow = `0 0 25px rgba(255, 255, 255, 0.9), inset 0 0 8px rgba(0, 0, 0, 0.15), 0 0 15px ${scheme.glow}`;
+            });
+            
+            // 針色変更
+            const hourHand = document.getElementById('hourHand');
+            const minuteHand = document.getElementById('minuteHand');
+            hourHand.style.background = `${scheme.hourHands}, radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9), transparent 60%)`;
+            minuteHand.style.background = `${scheme.minuteHands}, radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9), transparent 60%)`;
+            
+            // 中心ハブ色変更
+            const centerHub = document.querySelector('.center-hub');
+            centerHub.style.background = scheme.centerHub;
+            centerHub.style.boxShadow = `0 0 15px ${scheme.glow}, inset 0 0 5px rgba(255, 255, 255, 0.6)`;
+            
+            // 日付表示枠色変更
+            const dateDisplay = document.getElementById('dateWindow');
+            dateDisplay.style.borderColor = scheme.border;
+            dateDisplay.style.boxShadow = `inset 0 0 8px rgba(0, 0, 0, 0.15), 0 0 10px ${scheme.glow}`;
+            
+            // デジタル表示色変更
+            const digitalClock = document.getElementById('digitalClock');
+            digitalClock.style.color = scheme.digital;
+            digitalClock.style.textShadow = `0 0 15px ${scheme.glow}, 0 0 30px ${scheme.glow.replace('0.6', '0.4')}`;
+            digitalClock.style.borderColor = scheme.glow.replace('0.6', '0.3');
+            
+            console.log(`カラースキームを${scheme.name}に変更しました`);
+        }
+        
+        // PCでのクリックイベント
+        if (!isMobile) {
+            watchCase.addEventListener('click', function(e) {
+                e.preventDefault();
+                changeColorScheme();
+            });
+        }
         
         // ===== 初期化処理 =====
         console.log('高級時計プログラムを初期化中...');
