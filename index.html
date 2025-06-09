@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プレミアム高級時計</title>
+    <style>
+        /* ===== ベーススタイル ===== */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: 
+                radial-gradient(ellipse at top, #2c1810, #1a1a1a),
+                linear-gradient(135deg, #0f0f0f, #2d2d2d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        /* ===== メインシーン構成 ===== */
+        .scene {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            perspective: 1200px;
+        }
+
+        /* ===== 時計ケース ===== */
+        .watch-case {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 25% 25%, #ffffff, #f5f5f5, #e8e8e8),
+                linear-gradient(135deg, #f8f8f8, #e0e0e0);
+            box-shadow: 
+                0 0 80px rgba(255, 255, 255, 0.4),
+                inset 0 0 50px rgba(0, 0, 0, 0.08),
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                0 5px 20px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        /* ===== ダイヤモンドベゼル ===== */
+        .diamond-bezel {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: 
+                linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #e6c200),
+                radial-gradient(circle at 30% 30%, #fff, transparent 60%);
+            z-index: -1;
+            animation: gentle-glow 4s ease-in-out infinite alternate;
+        }
+
+        /* ===== アニメーション定義 ===== */
+        @keyframes gentle-glow {
+            0% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); }
+            100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.5); }
+        }
+
+        @keyframes diamond-rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes sunray-rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes diamond-shine {
+            0% { 
+                box-shadow: 
+                    0 0 25px rgba(255, 255, 255, 0.9),
+                    inset 0 0 8px rgba(0, 0, 0, 0.15),
+                    0 0 15px rgba(255, 215, 0, 0.4);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 35px rgba(255, 255, 255, 1),
+                    inset 0 0 12px rgba(0, 0, 0, 0.1),
+                    0 0 25px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @keyframes sparkle-point {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes second-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(255, 51, 51, 0.4); }
+            50% { opacity: 0.9; box-shadow: 0 0 12px rgba(255, 51, 51, 0.6); }
+        }
+
+        @keyframes reflection-shift {
+            0% { opacity: 0.6; transform: rotate(-20deg) scale(1); }
+            100% { opacity: 0.4; transform: rotate(-15deg) scale(1.1); }
+        }
+
+        /* ===== ベゼル装飾効果 ===== */
+        .diamond-bezel::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255, 255, 255, 0.9) 1.5deg,
+                transparent 3deg,
+                rgba(255, 255, 255, 0.7) 4.5deg,
+                transparent 6deg
+            );
+            animation: diamond-rotation 8s linear infinite;
+        }
+
+        /* ===== 文字盤 ===== */
+        .watch-face {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 390px;
+            height: 390px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(248, 248, 248, 0.8) 40%, rgba(232, 232, 232, 0.9)),
+                conic-gradient(from 90deg, #f0f0f0, #e8e8e8, #f0f0f0, #e8e8e8, #f0f0f0);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== サンレイ効果 ===== */
+        .sunray-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-conic-gradient(
+                from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(255, 255, 255, 0.15) 0.5deg,
+                transparent 1deg,
+                rgba(255, 255, 255, 0.08) 1.5deg,
+                transparent 2deg
+            );
+            animation: sunray-rotation 30s linear infinite;
+            opacity: 0.6;
+        }
+
+        /* ===== 時間インデックス ===== */
+        .hour-index {
+            position: absolute;
+            width: 6px;
+            height: 35px;
+            background: 
+                linear-gradient(to bottom, #ffd700, #ffed4e, #e6c200),
+                radial-gradient(ellipse at center, #fff, transparent 70%);
+            border-radius: 3px;
+            transform-origin: center bottom;
+            box-shadow: 
+                0 0 12px rgba(255, 215, 0, 0.6),
+                inset 0 0 3px rgba(255, 255, 255, 0.8);
+        }
+
+        /* ===== プレミアムダイヤモンド ===== */
+        .premium-diamond {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: 
+                radial-gradient(circle at 30% 30%, #ffffff, #f8f8f8, #e8e8e8),
+                linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%);
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            transform-origin: center;
+            box-shadow: 
+                0 0 25px rgba(255, 255, 255, 0.9),
+                inset 0 0 8px rgba(0, 0, 0, 0.15),
+                0 0 15px rgba(255, 215, 0, 0.4);
+            animation: diamond-shine 3s ease-in-out infinite alternate;
+        }
+
+        .premium-diamond::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent);
+            border-radius: 50%;
+            animation: sparkle-point 2s ease-in-out infinite;
+        }
+
+        /* ===== 中心ハブ ===== */
+        .center-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: 
+                radial-gradient(circle at 30% 30%, #ffd700, #e6c200, #b8860b),
+                linear-gradient(45deg, #ffed4e, #ffd700);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            box-shadow: 
+                0 0 15px rgba(255, 215, 0, 0.7),
+                inset 0 0 5px rgba(255, 255, 255, 0.6);
+        }
+
+        /* ===== 時計の針 ===== */
+        .watch-hand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center bottom;
+            border-radius: 2px;
+            background: 
+                linear-gradient(to top, #ffd700, #ffed4e, #fff),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8), transparent 70%);
+            box-shadow: 
+                0 0 12px rgba(255, 215, 0, 0.5),
+                inset 0 0 3px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 時針 */
+        .hour-hand {
+            width: 8px;
+            height: 100px;
+            margin-left: -4px;
+            margin-top: -100px;
+            z-index: 10;
+            background: 
+                linear-gradient(to top, #e6c200, #ffd700, #ffed4e, #fff),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9), transparent 60%);
+        }
+
+        /* 分針 */
+        .minute-hand {
+            width: 6px;
+            height: 140px;
+            margin-left: -3px;
+            margin-top: -140px;
+            z-index: 11;
+            background: 
+                linear-gradient(to top, #e6c200, #ffd700, #ffed4e, #fff),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9), transparent 60%);
+        }
+
+        /* 秒針 */
+        .second-hand {
+            width: 3px;
+            height: 150px;
+            margin-left: -1.5px;
+            margin-top: -150px;
+            background: 
+                linear-gradient(to top, #cc0000, #ff3333, #ff6666),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.7), transparent 50%);
+            z-index: 9;
+            animation: second-pulse 1s ease-in-out infinite;
+        }
+
+        /* ===== 日付表示 ===== */
+        .date-display {
+            position: absolute;
+            top: 50%;
+            right: 20%;
+            width: 40px;
+            height: 28px;
+            background: 
+                linear-gradient(135deg, #ffffff, #f8f8f8),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.9), transparent);
+            border: 3px solid #ffd700;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 
+                inset 0 0 8px rgba(0, 0, 0, 0.15),
+                0 0 10px rgba(255, 215, 0, 0.3);
+            transform: translateY(-50%);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* ===== ブランド表示 ===== */
+        .luxury-brand {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: 'Georgia', serif;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .model-text {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #888;
+            text-align: center;
+            letter-spacing: 1px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* ===== デジタル表示 ===== */
+        .digital-display {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 
+                0 0 15px rgba(255, 215, 0, 0.8),
+                0 0 30px rgba(255, 215, 0, 0.4);
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* ===== 反射効果 ===== */
+        .reflection {
+            position: absolute;
+            top: 50px;
+            left: 80px;
+            width: 120px;
+            height: 180px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.4) 0%,
+                    rgba(255, 255, 255, 0.2) 30%,
+                    transparent 60%
+                );
+            border-radius: 50%;
+            transform: rotate(-20deg);
+            pointer-events: none;
+            animation: reflection-shift 6s ease-in-out infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <!-- ダイヤモンドベゼル -->
+        <div class="diamond-bezel"></div>
+        
+        <!-- メイン時計ケース -->
+        <div class="watch-case" id="watchCase">
+            <div class="watch-face">
+                <!-- サンレイ効果 -->
+                <div class="sunray-effect"></div>
+                
+                <!-- 光の反射 -->
+                <div class="reflection"></div>
+                
+                <!-- ブランド表示 -->
+                <div class="luxury-brand">PRESTIGE</div>
+                <div class="model-text">AUTOMATIC</div>
+                
+                <!-- プレミアムダイヤモンド（12時、3時、6時、9時位置） -->
+                <div class="premium-diamond" style="top: 10px; left: 50%; transform: translateX(-50%);"></div>
+                <div class="premium-diamond" style="top: 50%; right: 10px; transform: translateY(-50%);"></div>
+                <div class="premium-diamond" style="bottom: 10px; left: 50%; transform: translateX(-50%);"></div>
+                <div class="premium-diamond" style="top: 50%; left: 10px; transform: translateY(-50%);"></div>
+                
+                <!-- ゴールドインデックス（その他の時間位置） -->
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(30deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(60deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(120deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(150deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(210deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(240deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(300deg); transform-origin: center 175px;"></div>
+                <div class="hour-index" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(330deg); transform-origin: center 175px;"></div>
+                
+                <!-- 日付表示窓 -->
+                <div class="date-display" id="dateWindow">01</div>
+                
+                <!-- 時計の針 -->
+                <div class="watch-hand hour-hand" id="hourHand"></div>
+                <div class="watch-hand minute-hand" id="minuteHand"></div>
+                <div class="watch-hand second-hand" id="secondHand"></div>
+                
+                <!-- 中心ハブ -->
+                <div class="center-hub"></div>
+            </div>
+        </div>
+        
+        <!-- デジタル時刻表示 -->
+        <div class="digital-display" id="digitalClock">00:00:00</div>
+    </div>
+
+    <script>
+        // ===== 定数定義 =====
+        const CLOCK_UPDATE_INTERVAL = 50; // ms単位（滑らかな秒針のため）
+        const HOUR_ANGLE_PER_HOUR = 30;   // 1時間あたりの角度
+        const MINUTE_ANGLE_PER_MINUTE = 6; // 1分あたりの角度
+        const SECOND_ANGLE_PER_SECOND = 6; // 1秒あたりの角度
+
+        // ===== DOM要素取得 =====
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        const dateWindow = document.getElementById('dateWindow');
+        const digitalClock = document.getElementById('digitalClock');
+        const watchCase = document.getElementById('watchCase');
+
+        // ===== 時刻更新機能 =====
+        function updateTimepiece() {
+            console.log('時刻を更新中...');
+            
+            try {
+                const currentTime = new Date();
+                const hours = currentTime.getHours() % 12;
+                const minutes = currentTime.getMinutes();
+                const seconds = currentTime.getSeconds();
+                const milliseconds = currentTime.getMilliseconds();
+                const date = currentTime.getDate();
+                
+                // 高精度な角度計算（ミリ秒まで考慮した滑らかな動き）
+                const preciseSeconds = seconds + (milliseconds / 1000);
+                const hourAngle = (hours * HOUR_ANGLE_PER_HOUR) + (minutes * 0.5) + (preciseSeconds * 0.00833);
+                const minuteAngle = (minutes * MINUTE_ANGLE_PER_MINUTE) + (preciseSeconds * 0.1);
+                const secondAngle = preciseSeconds * SECOND_ANGLE_PER_SECOND;
+                
+                // 針の回転を適用
+                hourHand.style.transform = `rotate(${hourAngle}deg)`;
+                minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
+                secondHand.style.transform = `rotate(${secondAngle}deg)`;
+                
+                // 日付表示更新
+                dateWindow.textContent = date.toString().padStart(2, '0');
+                
+                // デジタル時刻表示更新
+                const timeString = currentTime.toLocaleTimeString('ja-JP', { 
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                digitalClock.textContent = timeString;
+                
+            } catch (error) {
+                console.error('時刻更新中にエラーが発生しました:', error);
+            }
+        }
+        
+        // ===== 3Dインタラクション効果 =====
+        let isHovering = false;
+        
+        // マウスホバー開始時の処理
+        watchCase.addEventListener('mouseenter', function() {
+            console.log('マウスホバー開始');
+            isHovering = true;
+            
+            this.style.transform = 'rotateX(15deg) rotateY(15deg) scale(1.05)';
+            this.style.boxShadow = `
+                0 0 100px rgba(255, 255, 255, 0.6),
+                inset 0 0 50px rgba(0, 0, 0, 0.08),
+                0 30px 80px rgba(0, 0, 0, 0.8),
+                0 10px 30px rgba(0, 0, 0, 0.4)
+            `;
+        });
+        
+        // マウスホバー終了時の処理
+        watchCase.addEventListener('mouseleave', function() {
+            console.log('マウスホバー終了');
+            isHovering = false;
+            
+            this.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            this.style.boxShadow = `
+                0 0 80px rgba(255, 255, 255, 0.4),
+                inset 0 0 50px rgba(0, 0, 0, 0.08),
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                0 5px 20px rgba(0, 0, 0, 0.3)
+            `;
+        });
+        
+        // ===== マウス移動による動的な光の反射効果 =====
+        document.addEventListener('mousemove', function(e) {
+            if (isHovering) {
+                try {
+                    const rect = watchCase.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const mouseX = e.clientX - centerX;
+                    const mouseY = e.clientY - centerY;
+                    
+                    // マウス位置に基づいた回転角度の計算
+                    const rotateY = (mouseX / (rect.width / 2)) * 20;
+                    const rotateX = -(mouseY / (rect.height / 2)) * 20;
+                    
+                    watchCase.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                    
+                } catch (error) {
+                    console.error('マウス移動処理中にエラーが発生しました:', error);
+                }
+            }
+        });
+        
+        // ===== 初期化処理 =====
+        console.log('高級時計プログラムを初期化中...');
+        
+        // 最初の時刻表示
+        updateTimepiece();
+        
+        // 定期的な時刻更新（高頻度更新で滑らかな秒針）
+        setInterval(updateTimepiece, CLOCK_UPDATE_INTERVAL);
+        
+        console.log('高級時計プログラムの初期化が完了しました');
+    </script>
+</body>
+</html>
