@@ -366,6 +366,115 @@
             pointer-events: none;
             animation: reflection-shift 6s ease-in-out infinite alternate;
         }
+
+        /* ===== スマホ対応レスポンシブ ===== */
+        @media (max-width: 768px) {
+            .scene {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .diamond-bezel {
+                top: -10px;
+                left: -10px;
+                width: 320px;
+                height: 320px;
+            }
+            
+            .diamond-bezel::before {
+                top: 10px;
+                left: 10px;
+                width: 300px;
+                height: 300px;
+            }
+            
+            .watch-face {
+                top: 20px;
+                left: 20px;
+                width: 260px;
+                height: 260px;
+            }
+            
+            .hour-index {
+                width: 4px;
+                height: 23px;
+            }
+            
+            .hour-index[style*="transform-origin: center 175px"] {
+                transform-origin: center 117px !important;
+            }
+            
+            .premium-diamond {
+                width: 11px;
+                height: 11px;
+                border-width: 2px;
+            }
+            
+            .premium-diamond::before {
+                top: 1px;
+                left: 1px;
+                width: 4px;
+                height: 4px;
+            }
+            
+            .center-hub {
+                width: 13px;
+                height: 13px;
+            }
+            
+            .hour-hand {
+                width: 7px;
+                height: 67px;
+                margin-left: -3px;
+                margin-top: -67px;
+            }
+            
+            .minute-hand {
+                width: 4px;
+                height: 93px;
+                margin-left: -2px;
+                margin-top: -93px;
+            }
+            
+            .second-hand {
+                width: 2px;
+                height: 100px;
+                margin-left: -1px;
+                margin-top: -100px;
+            }
+            
+            .date-display {
+                width: 27px;
+                height: 19px;
+                font-size: 11px;
+                border-width: 2px;
+                border-radius: 4px;
+            }
+            
+            .luxury-brand {
+                font-size: 9px;
+                letter-spacing: 2px;
+            }
+            
+            .model-text {
+                font-size: 7px;
+                letter-spacing: 0.5px;
+            }
+            
+            .digital-display {
+                bottom: -53px;
+                font-size: 15px;
+                padding: 5px 11px;
+                border-radius: 5px;
+            }
+            
+            .reflection {
+                top: 33px;
+                left: 53px;
+                width: 80px;
+                height: 120px;
+            }
+        }
     </style>
 <!-- 基本ファビコン -->
 <link rel="icon" type="image/png" sizes="16x16" href="/luxury_watch/assets/favicons/favicon-lion-16x16.png">
